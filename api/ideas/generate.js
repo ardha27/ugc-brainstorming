@@ -1,7 +1,5 @@
-import Anthropic from '@anthropic-ai/sdk';
+import axios from 'axios';
 import { createClient } from '@supabase/supabase-js';
-
-const anthropic = new Anthropic();
 
 const supabase = createClient(
   process.env.VITE_SUPABASE_URL,
@@ -74,19 +72,26 @@ export default async function handler(req, res) {
       .replace('{productFeatures}', productFeatures)
       .replace('{relatedTrends}', relatedTrends);
 
-    // Call Claude API
-    const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1024,
-      messages: [{ role: 'user', content: prompt }]
-    });
+    // Call OpenCode API via OpenRouter
+    const openrouterResponse = await axios.post(
+      'https://openrouter.mubi.tech/api/v1/chat/completions',
+      {
+        model: 'oc/minimax-m2.5-free',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 1024,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
-    const responseText = message.content[0].text;
+    const responseText = openrouterResponse.data.choices?.[0]?.message?.content || '';
 
     // Parse JSON from response
     let ideaData;
     try {
-      // Try to extract JSON from the response
       const jsonMatch = responseText.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         ideaData = JSON.parse(jsonMatch[0]);
@@ -94,6 +99,7 @@ export default async function handler(req, res) {
         throw new Error('No JSON found in response');
       }
     } catch (parseError) {
+      console.error('Parse error:', parseError, 'Response:', responseText);
       return res.status(500).json({ error: 'Failed to parse AI response' });
     }
 

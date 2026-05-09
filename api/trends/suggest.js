@@ -1,8 +1,6 @@
-import Anthropic from '@anthropic-ai/sdk';
+import axios from 'axios';
 
-const anthropic = new Anthropic();
-
-const SYSTEM_PROMPT = \`Analisis trending topics ini dan sarankan mana yang bisa diintegrasikan secara natural dengan produk ini untuk konten UGC soft-selling.
+const SYSTEM_PROMPT = `Analisis trending topics ini dan sarankan mana yang bisa diintegrasikan secara natural dengan produk ini untuk konten UGC soft-selling.
 
 Produk: {productName} - {productCategory}
 Fitur: {productFeatures}
@@ -25,7 +23,7 @@ Format:
     "reasoning": "Alasan kenapa trend ini cocok...",
     "suggestedAngle": "Cara mengintegrasikan trend ke skit..."
   }
-]\`;
+]`;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -46,14 +44,22 @@ export default async function handler(req, res) {
       .replace('{productFeatures}', productFeatures || 'Tidak ada fitur spesifik')
       .replace('{trendsList}', 'Tidak ada trending topics terbaru. Berikan saran umum untuk konten soft-selling.');
 
-    // Call Claude API
-    const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1024,
-      messages: [{ role: 'user', content: prompt }]
-    });
+    // Call OpenRouter API
+    const openrouterResponse = await axios.post(
+      'https://openrouter.mubi.tech/api/v1/chat/completions',
+      {
+        model: 'oc/minimax-m2.5-free',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 1024,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
-    const responseText = message.content[0].text;
+    const responseText = openrouterResponse.data.choices?.[0]?.message?.content || '';
 
     // Parse JSON
     let suggestions;
