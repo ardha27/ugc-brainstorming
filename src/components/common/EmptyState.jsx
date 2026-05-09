@@ -1,11 +1,11 @@
 import { Button } from './Button';
 
-export function EmptyState({
+export function EmptyState({ 
   icon = '📝',
-  title,
-  description,
-  actionLabel,
-  onAction
+  title, 
+  description, 
+  actionLabel, 
+  onAction 
 }) {
   return (
     <div className="text-center py-12">
