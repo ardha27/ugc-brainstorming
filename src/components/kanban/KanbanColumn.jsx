@@ -1,4 +1,4 @@
-import { Droppable, Draggable } from 'react-beautiful-dnd';
+﻿import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { IdeaCard } from './IdeaCard';
 import { EmptyState } from '../common';
 

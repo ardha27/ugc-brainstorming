@@ -1,4 +1,4 @@
-import { Button, Badge } from '../common';
+﻿import { Button, Badge } from '../common';
 
 export function CardDetailModal({ idea, onClose, onDelete }) {
   if (!idea) return null;
