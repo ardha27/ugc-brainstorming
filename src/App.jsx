@@ -1,11 +1,18 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Dashboard } from './pages/Dashboard';
+import { GenerateIdea } from './pages/GenerateIdea';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
-      <h1 className="text-4xl font-bold text-primary mb-4">UGC Brainstorming</h1>
-      <p className="text-gray-400">Project initialized successfully!</p>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/generate" element={<GenerateIdea />} />
+        <Route path="/kanban" element={<div className="p-8"><h1 className="text-2xl font-bold">Kanban Board - Coming Soon</h1></div>} />
+        <Route path="/trends" element={<div className="p-8"><h1 className="text-2xl font-bold">Trending Topics - Coming Soon</h1></div>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
