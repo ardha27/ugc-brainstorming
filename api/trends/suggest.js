@@ -2,7 +2,7 @@ import Anthropic from '@anthropic-ai/sdk';
 
 const anthropic = new Anthropic();
 
-const SYSTEM_PROMPT = `Analisis trending topics ini dan sarankan mana yang bisa diintegrasikan secara natural dengan produk ini untuk konten UGC soft-selling.
+const SYSTEM_PROMPT = \`Analisis trending topics ini dan sarankan mana yang bisa diintegrasikan secara natural dengan produk ini untuk konten UGC soft-selling.
 
 Produk: {productName} - {productCategory}
 Fitur: {productFeatures}
@@ -25,7 +25,7 @@ Format:
     "reasoning": "Alasan kenapa trend ini cocok...",
     "suggestedAngle": "Cara mengintegrasikan trend ke skit..."
   }
-]`;
+]\`;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
