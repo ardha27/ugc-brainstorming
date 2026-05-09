@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Dashboard } from './pages/Dashboard';
 import { GenerateIdea } from './pages/GenerateIdea';
 import { KanbanBoard } from './pages/KanbanBoard';
-import { KanbanBoard } from './pages/KanbanBoard';
 
 function App() {
   return (
