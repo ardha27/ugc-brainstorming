@@ -8,21 +8,32 @@ const supabase = createClient(
 
 const SYSTEM_PROMPT = `Kamu adalah seorang kreator konten UGC yang ahli dalam membuat konten soft-selling melalui hiburan.
 
-Informasi Produk:
+INFORMASI PRODUK:
 - Nama: {productName}
 - Kategori: {productCategory}
 - Fitur Utama: {productFeatures}
 
-Trending Topics (opsional):
+TRENDING TOPICS (opsional):
 {relatedTrends}
 
-Tugas: Generate SATU ide skit kreatif yang:
+TUGAS: Generate SATU ide skit kreatif yang:
 1. Terlihat seperti konten hiburan murni (komedi/drama/relatable)
 2. Mempromosikan produk secara halus TANPA terlihat seperti iklan
 3. Produk harus terasa natural dalam cerita, tidak dipaksakan
 4. Harus punya hook/twist yang bikin orang mau share
 
-Ikuti format JSON yang sudah ditentukan.`;
+RESPONSE FORMAT: Kamu HARUS mengembalikan HANYA JSON valid tanpa markdown atau text lain.
+
+WAJIB gunakan field names ini (persis):
+- title: string (judul singkat catchy)
+- concept: string (deskripsi skit dengan dialog, bahasa Indonesia)
+- platform: "TikTok" | "Instagram" | "YouTube"
+- tone: "comedy" | "drama" | "relatable" | "absurd"
+- duration: "15s" | "30s" | "60s"
+- reasoning: string (kenapa efektif)
+- hookType: "plot-twist" | "misunderstanding" | "before-after" | "reaction"
+
+CONTOH: {"title":"Teman Kaget","concept":"Scene di cafe...","platform":"TikTok","tone":"comedy","duration":"30s","reasoning":"Twist natural","hookType":"plot-twist"}`;
 
 const SCHEMA = {
   type: "json_schema",
@@ -79,10 +90,9 @@ export default async function handler(req, res) {
       {
         model: 'minimax-m2.5-free',
         messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: prompt }
+          { role: 'user', content: SYSTEM_PROMPT + '\n\n' + prompt }
         ],
-        max_tokens: 2048,
+        max_tokens: 4096,
         response_format: SCHEMA
       },
       {
@@ -100,20 +110,36 @@ export default async function handler(req, res) {
       ideaData = opencodeResponse.data.choices[0].message.structured_output;
     }
 
-    // Fallback to parsing text if structured output not available
+    // Fallback: parse JSON from text (handle markdown code blocks)
     if (!ideaData) {
       try {
-        const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+        // Remove markdown code blocks if present
+        let cleanText = responseText
+          .replace(/```json\s*/gi, '')
+          .replace(/```\s*/g, '')
+          .trim();
+
+        const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
-          ideaData = JSON.parse(jsonMatch[0]);
+          const parsed = JSON.parse(jsonMatch[0]);
+          // Map field names to expected schema
+          ideaData = {
+            title: parsed.skit_title || parsed.title || 'Untitled',
+            concept: parsed.scene_sequence || parsed.concept || parsed.description || '',
+            platform: parsed.platform || 'TikTok',
+            tone: parsed.format || parsed.tone || 'comedy',
+            duration: parsed.duration_estimate || parsed.duration || '30s',
+            reasoning: parsed.rationale || parsed.reasoning || 'Konten yang engaging',
+            hookType: parsed.hook_type || parsed.hookType || 'plot-twist'
+          };
         }
       } catch (parseError) {
-        // Ignore parse errors if we have structured output
+        console.error('Parse error:', parseError.message);
       }
     }
 
     if (!ideaData) {
-      console.error('No valid output. Response:', responseText.substring(0, 500));
+      console.error('No valid output. Response:', responseText.substring(0, 300));
       return res.status(500).json({ error: 'Failed to get valid response from AI' });
     }
 
