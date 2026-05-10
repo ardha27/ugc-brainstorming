@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Layout } from '../components/layout';
 import { Button, EmptyState } from '../components/common';
@@ -49,18 +49,18 @@ export function Dashboard() {
     <Layout>
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
-          <p className="text-gray-600">Selamat datang di UGC Brainstorming Tool!</p>
+          <h1 className="text-3xl font-bold text-gray-100 mb-2">Dashboard</h1>
+          <p className="text-gray-400">Selamat datang di UGC Brainstorming Tool!</p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-4 gap-4 mb-8">
           {statCards.map((stat) => (
-            <div key={stat.label} className="bg-white rounded-lg border border-gray-200 p-6">
+            <div key={stat.label} className="bg-gray-800 rounded-lg border border-gray-700 p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-500">{stat.label}</p>
-                  <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+                  <p className="text-sm text-gray-400">{stat.label}</p>
+                  <p className="text-3xl font-bold text-gray-100">{stat.value}</p>
                 </div>
                 <span className="text-4xl">{stat.icon}</span>
               </div>
@@ -82,9 +82,9 @@ export function Dashboard() {
         </div>
 
         {/* Recent Trends */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-gray-800 rounded-lg border border-gray-700 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900">🔥 Trending Topics</h2>
+            <h2 className="text-xl font-bold text-gray-100">🔥 Trending Topics</h2>
             <Link to="/trends" className="text-primary hover:underline">
               View All →
             </Link>
@@ -99,16 +99,16 @@ export function Dashboard() {
           ) : (
             <div className="grid grid-cols-2 gap-4">
               {recentTrends.map((trend) => (
-                <div key={trend.id} className="border border-gray-200 rounded-lg p-4">
+                <div key={trend.id} className="border border-gray-700 rounded-lg p-4">
                   <div className="flex items-center space-x-2 mb-2">
                     <span className="text-lg">
                       {trend.source === 'google_trends' ? '🔍' : trend.source === 'reddit' ? '🤖' : '📺'}
                     </span>
-                    <span className="text-sm text-gray-500">{trend.source.replace('_', ' ')}</span>
+                    <span className="text-sm text-gray-400">{trend.source.replace('_', ' ')}</span>
                   </div>
-                  <h3 className="font-medium text-gray-900">{trend.title}</h3>
+                  <h3 className="font-medium text-gray-200">{trend.title}</h3>
                   {trend.description && (
-                    <p className="text-sm text-gray-600 mt-1 line-clamp-2">{trend.description}</p>
+                    <p className="text-sm text-gray-400 mt-1 line-clamp-2">{trend.description}</p>
                   )}
                 </div>
               ))}
@@ -119,15 +119,15 @@ export function Dashboard() {
         {/* Quick Links */}
         <div className="grid grid-cols-2 gap-4 mt-8">
           <Link to="/kanban" className="block">
-            <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
-              <h3 className="text-lg font-bold text-gray-900 mb-2">📋 Kanban Board</h3>
-              <p className="text-gray-600">Kelola ide dari brainstorm sampai published</p>
+            <div className="bg-gray-800 rounded-lg border border-gray-700 p-6 hover:shadow-lg hover:border-primary transition-all">
+              <h3 className="text-lg font-bold text-gray-100 mb-2">📋 Kanban Board</h3>
+              <p className="text-gray-400">Kelola ide dari brainstorm sampai published</p>
             </div>
           </Link>
           <Link to="/generate" className="block">
-            <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
-              <h3 className="text-lg font-bold text-gray-900 mb-2">✨ Generate Idea</h3>
-              <p className="text-gray-600">Buat ide skit baru dengan AI</p>
+            <div className="bg-gray-800 rounded-lg border border-gray-700 p-6 hover:shadow-lg hover:border-primary transition-all">
+              <h3 className="text-lg font-bold text-gray-100 mb-2">✨ Generate Idea</h3>
+              <p className="text-gray-400">Buat ide skit baru dengan AI</p>
             </div>
           </Link>
         </div>

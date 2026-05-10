@@ -14,7 +14,7 @@ export function TrendCard({ trend, onUse }) {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow">
+    <div className="bg-gray-800 rounded-lg border border-gray-700 p-4 hover:shadow-lg hover:border-primary transition-all">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center space-x-2">
           <span className="text-2xl">{sourceIcons[trend.source]}</span>
@@ -27,10 +27,10 @@ export function TrendCard({ trend, onUse }) {
         </div>
       </div>
 
-      <h3 className="font-medium text-gray-900 mb-2">{trend.title}</h3>
+      <h3 className="font-medium text-gray-100 mb-2">{trend.title}</h3>
 
       {trend.description && (
-        <p className="text-sm text-gray-600 mb-3 line-clamp-2">{trend.description}</p>
+        <p className="text-sm text-gray-400 mb-3 line-clamp-2">{trend.description}</p>
       )}
 
       {trend.category && (

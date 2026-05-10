@@ -30,7 +30,6 @@ export function TrendingTopics() {
   };
 
   const handleUseTrend = (trend) => {
-    // Navigate to generate page with trend pre-selected
     navigate('/generate', { state: { trend } });
   };
 
@@ -41,17 +40,17 @@ export function TrendingTopics() {
   return (
     <Layout>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Trending Topics</h1>
-        <p className="text-gray-600">Temukan topik trending untuk ide konten Anda</p>
+        <h1 className="text-3xl font-bold text-gray-100 mb-2">Trending Topics</h1>
+        <p className="text-gray-400">Temukan topik trending untuk ide konten Anda</p>
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+        <div className="bg-red-900/50 border border-red-700 text-red-200 px-4 py-3 rounded-lg mb-6">
           <p>{error}</p>
         </div>
       )}
 
-      <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
+      <div className="bg-gray-800 rounded-lg border border-gray-700 p-4 mb-6">
         <TrendTabs activeTab={activeTab} onTabChange={setActiveTab} />
       </div>
 

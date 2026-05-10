@@ -82,12 +82,12 @@ export function KanbanBoard() {
   return (
     <Layout>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Kanban Board</h1>
-        <p className="text-gray-600">Kelola ide dari brainstorm sampai published</p>
+        <h1 className="text-3xl font-bold text-gray-100 mb-2">Kanban Board</h1>
+        <p className="text-gray-400">Kelola ide dari brainstorm sampai published</p>
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+        <div className="bg-red-900/50 border border-red-700 text-red-200 px-4 py-3 rounded-lg mb-6">
           <p>{error}</p>
         </div>
       )}

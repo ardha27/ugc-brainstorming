@@ -1,13 +1,13 @@
-﻿import { Droppable, Draggable } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { IdeaCard } from './IdeaCard';
 import { EmptyState } from '../common';
 
 export function KanbanColumn({ column, ideas, onCardClick }) {
   const columnColors = {
-    ideas: 'bg-gray-100',
-    script_ready: 'bg-blue-100',
-    in_production: 'bg-orange-100',
-    published: 'bg-green-100',
+    ideas: 'bg-gray-700',
+    script_ready: 'bg-blue-900',
+    in_production: 'bg-orange-900',
+    published: 'bg-green-900',
   };
 
   const columnTitles = {
@@ -20,9 +20,9 @@ export function KanbanColumn({ column, ideas, onCardClick }) {
   return (
     <div className="flex-1 min-w-[300px]">
       <div className={`${columnColors[column]} rounded-t-lg px-4 py-3`}>
-        <h2 className="font-bold text-gray-900 flex items-center justify-between">
+        <h2 className="font-bold text-gray-100 flex items-center justify-between">
           <span>{columnTitles[column]}</span>
-          <span className="text-sm font-normal text-gray-600">({ideas.length})</span>
+          <span className="text-sm font-normal text-gray-400">({ideas.length})</span>
         </h2>
       </div>
 
@@ -31,8 +31,8 @@ export function KanbanColumn({ column, ideas, onCardClick }) {
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`bg-gray-50 rounded-b-lg p-4 min-h-[500px] space-y-3 ${
-              snapshot.isDraggingOver ? 'bg-indigo-50' : ''
+            className={`bg-gray-800/50 rounded-b-lg p-4 min-h-[500px] space-y-3 border border-t-0 border-gray-700 ${
+              snapshot.isDraggingOver ? 'bg-indigo-900/30 border-primary' : ''
             }`}
           >
             {ideas.length === 0 ? (

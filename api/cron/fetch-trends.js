@@ -55,11 +55,34 @@ async function fetchGoogleTrends() {
 
 async function fetchRedditTrends() {
   try {
-    // Note: In production, use Reddit API with authentication
-    // For now, return empty array as placeholder
-    // Real implementation would need Reddit API credentials
-    console.log('Reddit API requires authentication - skipping for now');
-    return [];
+    // Use Reddit's official JSON endpoints (no auth required for public data)
+    const subreddits = ['indonesia', 'indonesiadaily', 'raryosan', 'comedy'];
+    const trends = [];
+
+    for (const sub of subreddits) {
+      const response = await axios.get(`https://www.reddit.com/r/${sub}/hot.json`, {
+        params: { limit: 10 },
+        headers: { 'User-Agent': 'UGC-Brainstorming/1.0' }
+      });
+
+      for (const post of response.data?.data?.children || []) {
+        const data = post.data;
+        trends.push({
+          source: 'reddit',
+          title: data.title,
+          description: data.selftext?.substring(0, 200) || `r/${sub} - ${data.score} upvotes`,
+          url: `https://reddit.com${data.permalink}`,
+          category: sub,
+          country: 'ID',
+          score: data.score || 0,
+          fetched_at: new Date().toISOString(),
+          expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+        });
+      }
+    }
+
+    // Sort by score and take top 20
+    return trends.sort((a, b) => b.score - a.score).slice(0, 20);
   } catch (error) {
     console.error('Reddit fetch error:', error.message);
     return [];

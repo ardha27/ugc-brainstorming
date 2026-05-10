@@ -1,4 +1,4 @@
-﻿import { Badge } from '../common';
+import { Badge } from '../common';
 
 export function IdeaCard({ idea, onClick }) {
   const platformIcons = {
@@ -10,9 +10,9 @@ export function IdeaCard({ idea, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-lg border border-gray-200 p-4 cursor-pointer hover:shadow-md transition-shadow"
+      className="bg-gray-700 rounded-lg border border-gray-600 p-4 cursor-pointer hover:shadow-md hover:border-primary transition-all"
     >
-      <h3 className="font-medium text-gray-900 mb-2 line-clamp-2">{idea.title}</h3>
+      <h3 className="font-medium text-gray-100 mb-2 line-clamp-2">{idea.title}</h3>
 
       <div className="flex items-center space-x-2 mb-3">
         <Badge variant="default">{idea.product_name}</Badge>

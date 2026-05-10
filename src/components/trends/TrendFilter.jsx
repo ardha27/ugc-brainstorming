@@ -18,7 +18,7 @@ export function TrendFilter({ selectedCategory, onCategoryChange }) {
           className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
             (category === 'All' && !selectedCategory) || selectedCategory === category
               ? 'bg-primary text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
           }`}
         >
           {category.charAt(0).toUpperCase() + category.slice(1)}

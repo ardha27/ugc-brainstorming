@@ -9,14 +9,14 @@ export function IdeaPreview({ idea, onRegenerate, onSave, onDiscard, isLoading }
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
+      <div className="bg-gray-800 rounded-lg border border-gray-700 p-6">
         <div className="flex items-start justify-between mb-4">
-          <h2 className="text-2xl font-bold text-gray-900">{idea.title}</h2>
+          <h2 className="text-2xl font-bold text-gray-100">{idea.title}</h2>
           <Badge variant="purple">AI Generated</Badge>
         </div>
 
         <div className="prose max-w-none mb-6">
-          <p className="text-gray-700 whitespace-pre-line">{idea.concept}</p>
+          <p className="text-gray-300 whitespace-pre-line">{idea.concept}</p>
         </div>
 
         <div className="grid grid-cols-3 gap-4 mb-6">
@@ -39,21 +39,21 @@ export function IdeaPreview({ idea, onRegenerate, onSave, onDiscard, isLoading }
           </div>
         </div>
 
-        <div className="bg-indigo-50 rounded-lg p-4 mb-6">
-          <h3 className="text-sm font-medium text-indigo-900 mb-2">💡 Kenapa Ini Efektif?</h3>
-          <p className="text-sm text-indigo-700">{idea.aiReasoning}</p>
+        <div className="bg-indigo-900/50 rounded-lg p-4 mb-6">
+          <h3 className="text-sm font-medium text-indigo-300 mb-2">💡 Kenapa Ini Efektif?</h3>
+          <p className="text-sm text-indigo-200">{idea.aiReasoning}</p>
         </div>
 
         {idea.relatedTrends && idea.relatedTrends.length > 0 && (
-          <div className="border-t border-gray-200 pt-4">
-            <h3 className="text-sm font-medium text-gray-900 mb-3">🔥 Related Trends</h3>
+          <div className="border-t border-gray-700 pt-4">
+            <h3 className="text-sm font-medium text-gray-300 mb-3">🔥 Related Trends</h3>
             <div className="space-y-2">
               {idea.relatedTrends.map((trend, idx) => (
                 <div key={idx} className="flex items-start space-x-2 text-sm">
                   <Badge variant="success">{Math.round(trend.relevanceScore * 100)}%</Badge>
                   <div>
-                    <p className="font-medium text-gray-900">{trend.title}</p>
-                    <p className="text-gray-600">{trend.reasoning}</p>
+                    <p className="font-medium text-gray-200">{trend.title}</p>
+                    <p className="text-gray-400">{trend.reasoning}</p>
                   </div>
                 </div>
               ))}

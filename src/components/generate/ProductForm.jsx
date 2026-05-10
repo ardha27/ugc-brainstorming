@@ -39,7 +39,7 @@ export function ProductForm({ onSubmit, isLoading }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label htmlFor="productName" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="productName" className="block text-sm font-medium text-gray-300 mb-2">
           Nama Produk
         </label>
         <input
@@ -49,7 +49,7 @@ export function ProductForm({ onSubmit, isLoading }) {
           value={formData.productName}
           onChange={handleChange}
           placeholder="Contoh: ElevenLabs"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+          className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent"
           required
           minLength={2}
           maxLength={100}
@@ -57,7 +57,7 @@ export function ProductForm({ onSubmit, isLoading }) {
       </div>
 
       <div>
-        <label htmlFor="productCategory" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="productCategory" className="block text-sm font-medium text-gray-300 mb-2">
           Kategori Produk
         </label>
         <select
@@ -65,7 +65,7 @@ export function ProductForm({ onSubmit, isLoading }) {
           name="productCategory"
           value={formData.productCategory}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+          className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-primary focus:border-transparent"
           required
         >
           <option value="">Pilih kategori...</option>
@@ -78,7 +78,7 @@ export function ProductForm({ onSubmit, isLoading }) {
       </div>
 
       <div>
-        <label htmlFor="productFeatures" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="productFeatures" className="block text-sm font-medium text-gray-300 mb-2">
           Fitur Utama (2-3 poin)
         </label>
         <textarea
@@ -88,7 +88,7 @@ export function ProductForm({ onSubmit, isLoading }) {
           onChange={handleChange}
           placeholder="Contoh:&#10;- Clone suara dengan AI&#10;- Support 29 bahasa&#10;- Hasil natural seperti manusia"
           rows={5}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+          className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent"
           required
           minLength={10}
           maxLength={500}

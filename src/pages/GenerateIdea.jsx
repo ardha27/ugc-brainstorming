@@ -39,20 +39,12 @@ export function GenerateIdea() {
   };
 
   const handleRegenerate = async () => {
-    // Re-use existing form data would require storing it
-    // For now, show message that this requires re-submitting
     alert('Silakan submit ulang form untuk regenerate ide');
   };
 
   const handleSave = async () => {
     if (!generatedIdea) return;
-
-    try {
-      // The idea is already saved by the API, just navigate to kanban
-      navigate('/kanban');
-    } catch (err) {
-      setError('Failed to save idea');
-    }
+    navigate('/kanban');
   };
 
   const handleDiscard = async () => {
@@ -70,27 +62,27 @@ export function GenerateIdea() {
     <Layout>
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Generate Ide Skit</h1>
-          <p className="text-gray-600">
+          <h1 className="text-3xl font-bold text-gray-100 mb-2">Generate Ide Skit</h1>
+          <p className="text-gray-400">
             Masukkan info produk dan AI akan generate ide skit kreatif untuk soft-selling
           </p>
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+          <div className="bg-red-900/50 border border-red-700 text-red-200 px-4 py-3 rounded-lg mb-6">
             <p className="font-medium">Error</p>
             <p>{error}</p>
           </div>
         )}
 
         {step === 'form' && (
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="bg-gray-800 rounded-lg border border-gray-700 p-6">
             <ProductForm onSubmit={handleSubmit} isLoading={isLoading} />
           </div>
         )}
 
         {step === 'generating' && (
-          <div className="bg-white rounded-lg border border-gray-200 p-12">
+          <div className="bg-gray-800 rounded-lg border border-gray-700 p-12">
             <GeneratingLoader />
           </div>
         )}

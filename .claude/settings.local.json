@@ -16,7 +16,8 @@
       "Bash(cat src/index.css)",
       "Bash(mkdir -p src)",
       "Bash(cat)",
-      "Bash(git check-ignore *)"
+      "Bash(git check-ignore *)",
+      "Bash(git push *)"
     ]
   }
 }
