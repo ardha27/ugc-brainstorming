@@ -13,8 +13,28 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "src": "/api/ideas/generate",
+      "dest": "/api/ideas/generate.js"
+    },
+    {
+      "src": "/api/ideas/index",
+      "dest": "/api/ideas/index.js"
+    },
+    {
+      "src": "/api/ideas/[id]",
+      "dest": "/api/ideas/[id].js"
+    },
+    {
+      "src": "/api/trends/index",
+      "dest": "/api/trends/index.js"
+    },
+    {
+      "src": "/api/trends/suggest",
+      "dest": "/api/trends/suggest.js"
+    },
+    {
+      "src": "/api/cron/fetch-trends",
+      "dest": "/api/cron/fetch-trends.js"
     },
     {
       "src": "/assets/(.*)",
