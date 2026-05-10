@@ -22,23 +22,21 @@ Tugas: Generate SATU ide skit kreatif yang:
 3. Produk harus terasa natural dalam cerita, tidak dipaksakan
 4. Harus punya hook/twist yang bikin orang mau share
 
-Format output (JSON):
+IMPORTANT: Kamu HARUS mengembalikan response dalam format JSON murni tanpa markdown formatting. Tidak boleh ada text lain selain JSON.
+
+Format JSON yang WAJIB diikuti (tanpa backticks):
 {
   "title": "Judul singkat yang catchy",
-  "concept": "Deskripsi skit 1-2 paragraf dalam bahasa Indonesia",
-  "platform": "TikTok/Instagram/YouTube",
-  "tone": "comedy/drama/relatable/absurd",
-  "duration": "15s/30s/60s",
+  "concept": "Deskripsi skit dalam bahasa Indonesia dengan dialog",
+  "platform": "TikTok",
+  "tone": "comedy",
+  "duration": "30s",
   "reasoning": "Kenapa pendekatan ini efektif untuk soft-selling",
-  "hookType": "plot-twist/misunderstanding/before-after/reaction"
+  "hookType": "plot-twist"
 }
 
-Contoh soft-selling yang bagus:
-- AI meeting tool: Orang baca jawaban AI tapi malah kebaca intro-nya "begini jawaban dari pertanyaan..." (kesalahan lucu yang reveal toolnya)
-- Voice cloning: Teman kaget kok bisa lancar bahasa Inggris, ternyata pakai voice cloning (drama + reveal produk)
-- Video generator: Parody adegan drama Korea nembak artis, reveal videonya AI generated (komedi + showcase produk)
-
-Buat konten yang terasa autentik dan natural untuk audience Indonesia. Gunakan referensi budaya pop Indonesia kalau relevan. Jangan buat yang terasa seperti iklan.`;
+Contoh response yang BENAR (tanpa backticks):
+{"title":"Teman Kaget Suara Asing","concept":"Scene di kedai kopi...","platform":"TikTok","tone":"comedy","duration":"30s","reasoning":"因为...","hookType":"plot-twist"}`;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -78,7 +76,7 @@ export default async function handler(req, res) {
       {
         model: 'minimax-m2.5-free',
         messages: [{ role: 'user', content: prompt }],
-        max_tokens: 1024,
+        max_tokens: 2048,
       },
       {
         headers: {
@@ -92,15 +90,18 @@ export default async function handler(req, res) {
     // Parse JSON from response
     let ideaData;
     try {
+      // Try to extract JSON from response
       const jsonMatch = responseText.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         ideaData = JSON.parse(jsonMatch[0]);
       } else {
-        throw new Error('No JSON found in response');
+        // If no JSON found, return error with response for debugging
+        console.error('No JSON in response:', responseText.substring(0, 500));
+        return res.status(500).json({ error: 'AI response format invalid', debug: responseText.substring(0, 200) });
       }
     } catch (parseError) {
-      console.error('Parse error:', parseError, 'Response:', responseText);
-      return res.status(500).json({ error: 'Failed to parse AI response' });
+      console.error('Parse error:', parseError, 'Response:', responseText.substring(0, 500));
+      return res.status(500).json({ error: 'Failed to parse AI response', debug: responseText.substring(0, 200) });
     }
 
     // Save to database
