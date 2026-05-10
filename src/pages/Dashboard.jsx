@@ -75,7 +75,7 @@ export function Dashboard() {
             Masukkan info produk dan AI akan generate ide skit kreatif untuk soft-selling!
           </p>
           <Link to="/generate">
-            <Button className="bg-white text-primary hover:bg-gray-100">
+            <Button className="bg-indigo-500 text-white hover:bg-indigo-400">
               ✨ Mulai Generate
             </Button>
           </Link>
