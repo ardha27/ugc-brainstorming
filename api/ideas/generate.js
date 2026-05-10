@@ -72,11 +72,11 @@ export default async function handler(req, res) {
       .replace('{productFeatures}', productFeatures)
       .replace('{relatedTrends}', relatedTrends);
 
-    // Call OpenCode API via OpenRouter
-    const openrouterResponse = await axios.post(
-      'https://openrouter.mubi.tech/api/v1/chat/completions',
+    // Call OpenCode Zen API
+    const opencodeResponse = await axios.post(
+      'https://opencode.ai/zen/v1/chat/completions',
       {
-        model: 'oc/minimax-m2.5-free',
+        model: 'minimax-m2.5-free',
         messages: [{ role: 'user', content: prompt }],
         max_tokens: 1024,
       },
@@ -87,7 +87,7 @@ export default async function handler(req, res) {
       }
     );
 
-    const responseText = openrouterResponse.data.choices?.[0]?.message?.content || '';
+    const responseText = opencodeResponse.data.choices?.[0]?.message?.content || '';
 
     // Parse JSON from response
     let ideaData;

@@ -44,11 +44,11 @@ export default async function handler(req, res) {
       .replace('{productFeatures}', productFeatures || 'Tidak ada fitur spesifik')
       .replace('{trendsList}', 'Tidak ada trending topics terbaru. Berikan saran umum untuk konten soft-selling.');
 
-    // Call OpenRouter API
-    const openrouterResponse = await axios.post(
-      'https://openrouter.mubi.tech/api/v1/chat/completions',
+    // Call OpenCode Zen API
+    const opencodeResponse = await axios.post(
+      'https://opencode.ai/zen/v1/chat/completions',
       {
-        model: 'oc/minimax-m2.5-free',
+        model: 'minimax-m2.5-free',
         messages: [{ role: 'user', content: prompt }],
         max_tokens: 1024,
       },
@@ -59,7 +59,7 @@ export default async function handler(req, res) {
       }
     );
 
-    const responseText = openrouterResponse.data.choices?.[0]?.message?.content || '';
+    const responseText = opencodeResponse.data.choices?.[0]?.message?.content || '';
 
     // Parse JSON
     let suggestions;
