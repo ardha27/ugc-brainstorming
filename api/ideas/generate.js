@@ -22,21 +22,24 @@ Tugas: Generate SATU ide skit kreatif yang:
 3. Produk harus terasa natural dalam cerita, tidak dipaksakan
 4. Harus punya hook/twist yang bikin orang mau share
 
-IMPORTANT: Kamu HARUS mengembalikan response dalam format JSON murni tanpa markdown formatting. Tidak boleh ada text lain selain JSON.
+Ikuti format JSON yang sudah ditentukan.`;
 
-Format JSON yang WAJIB diikuti (tanpa backticks):
-{
-  "title": "Judul singkat yang catchy",
-  "concept": "Deskripsi skit dalam bahasa Indonesia dengan dialog",
-  "platform": "TikTok",
-  "tone": "comedy",
-  "duration": "30s",
-  "reasoning": "Kenapa pendekatan ini efektif untuk soft-selling",
-  "hookType": "plot-twist"
-}
-
-Contoh response yang BENAR (tanpa backticks):
-{"title":"Teman Kaget Suara Asing","concept":"Scene di kedai kopi...","platform":"TikTok","tone":"comedy","duration":"30s","reasoning":"因为...","hookType":"plot-twist"}`;
+const SCHEMA = {
+  type: "json_schema",
+  schema: {
+    type: "object",
+    properties: {
+      title: { type: "string", description: "Judul singkat yang catchy untuk ide skit" },
+      concept: { type: "string", description: "Deskripsi skit lengkap dengan dialog dalam bahasa Indonesia" },
+      platform: { type: "string", enum: ["TikTok", "Instagram", "YouTube"], description: "Platform yang cocok" },
+      tone: { type: "string", enum: ["comedy", "drama", "relatable", "absurd"], description: "Tone konten" },
+      duration: { type: "string", enum: ["15s", "30s", "60s"], description: "Durasi video" },
+      reasoning: { type: "string", description: "Penjelasan kenapa approach ini efektif" },
+      hookType: { type: "string", enum: ["plot-twist", "misunderstanding", "before-after", "reaction"], description: "Tipe hook" }
+    },
+    required: ["title", "concept", "platform", "tone", "duration", "reasoning", "hookType"]
+  }
+};
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -70,13 +73,17 @@ export default async function handler(req, res) {
       .replace('{productFeatures}', productFeatures)
       .replace('{relatedTrends}', relatedTrends);
 
-    // Call OpenCode Zen API
+    // Call OpenCode Zen API with structured output
     const opencodeResponse = await axios.post(
       'https://opencode.ai/zen/v1/chat/completions',
       {
         model: 'minimax-m2.5-free',
-        messages: [{ role: 'user', content: prompt }],
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user', content: prompt }
+        ],
         max_tokens: 2048,
+        response_format: SCHEMA
       },
       {
         headers: {
@@ -86,22 +93,28 @@ export default async function handler(req, res) {
     );
 
     const responseText = opencodeResponse.data.choices?.[0]?.message?.content || '';
+    let ideaData = null;
 
-    // Parse JSON from response
-    let ideaData;
-    try {
-      // Try to extract JSON from response
-      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        ideaData = JSON.parse(jsonMatch[0]);
-      } else {
-        // If no JSON found, return error with response for debugging
-        console.error('No JSON in response:', responseText.substring(0, 500));
-        return res.status(500).json({ error: 'AI response format invalid', debug: responseText.substring(0, 200) });
+    // Check if structured output is available
+    if (opencodeResponse.data.choices?.[0]?.message?.structured_output) {
+      ideaData = opencodeResponse.data.choices[0].message.structured_output;
+    }
+
+    // Fallback to parsing text if structured output not available
+    if (!ideaData) {
+      try {
+        const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          ideaData = JSON.parse(jsonMatch[0]);
+        }
+      } catch (parseError) {
+        // Ignore parse errors if we have structured output
       }
-    } catch (parseError) {
-      console.error('Parse error:', parseError, 'Response:', responseText.substring(0, 500));
-      return res.status(500).json({ error: 'Failed to parse AI response', debug: responseText.substring(0, 200) });
+    }
+
+    if (!ideaData) {
+      console.error('No valid output. Response:', responseText.substring(0, 500));
+      return res.status(500).json({ error: 'Failed to get valid response from AI' });
     }
 
     // Save to database
